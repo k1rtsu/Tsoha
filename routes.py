@@ -6,7 +6,8 @@ import users
 #MAINPAGE
 @app.route("/")
 def index():
-    return render_template("index.html")
+    username = session.get('username')
+    return render_template("index.html", username=username)
 
 #CREATEACCOUNT
 @app.route('/create_account', methods=['GET', 'POST'])

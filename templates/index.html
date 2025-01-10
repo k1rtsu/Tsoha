@@ -6,6 +6,9 @@
 </head>
 <body>
     <h1>Tervetuloa keskustelufoorumille!</h1>
+        {% if username %}
+            <p>Hei, {{ username }}!</p>
+        {% endif %}
     <p>
         <a href="/create_account">Luo käyttäjä</a>
     </p>

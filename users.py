@@ -5,13 +5,13 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from db import db
 
 def login(username, password):
-    sql = text("SELECT id, password FROM users WHERE username=:username")
+    sql = text("SELECT id, password_hash FROM users WHERE username=:username")
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     if user == None:
         return False
     else:
-        if check_password_hash(user.password, password):
+        if check_password_hash(user.password_hash, password):
             session["username"] = username
             session["csrf_token"] = secrets.token_hex(16)
             session["user_id"] = user.id
