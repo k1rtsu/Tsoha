@@ -56,3 +56,5 @@ def login():
 def logout():
     users.logout()
     return redirect('/')
+
+
