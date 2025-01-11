@@ -2,12 +2,20 @@ from app import app
 import secrets
 from flask import render_template, request, redirect, session, abort
 import users
+from regions import get_regions
 
 #MAINPAGE
 @app.route("/")
 def index():
     username = session.get('username')
     return render_template("index.html", username=username)
+
+#MYPAGE
+@app.route("/my_page")
+def my_page():
+    username = session.get('username')
+    regions = get_regions()  # Hae kaikki alueet
+    return render_template("my_page.html", username=username, regions=regions)
 
 #CREATEACCOUNT
 @app.route('/create_account', methods=['GET', 'POST'])
@@ -30,7 +38,7 @@ def create_account():
             return render_template("create_account.html", error="Password must be at least 8 characters long.", csrf_token=session['csrf_token'])
 
         if users.create_account(username, password):
-            return redirect('/')
+            return redirect('/my_page')
         
         return render_template("create_account.html", error="Username already taken or registration failed.", csrf_token=session['csrf_token'])
 
@@ -48,7 +56,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         if users.login(username, password):
-            return redirect('/')
+            return redirect('my_page')
         return render_template("login.html", error="Wrong username or password", csrf_token=session['csrf_token'])
 
 #LOGOUT
@@ -56,5 +64,3 @@ def login():
 def logout():
     users.logout()
     return redirect('/')
-
-
