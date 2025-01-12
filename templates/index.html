@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fi">
 <head>
     <meta charset="UTF-8">
@@ -6,14 +7,25 @@
 </head>
 <body>
     <h1>Tervetuloa keskustelufoorumille!</h1>
-
     {% if username %}
         <p>Hei, {{ username }}!</p>
+
+        <h2>Alueet</h2>
+        <ul>
+            {% for region in regions %}
+                <li>
+                    <a href="/region/{{ region.id }}">{{ region.name }}</a> 
+                    - {{ region.description }}
+                    <br>
+                    Topics: {{ regions_topic_count[region.id] }} | 
+                    Posts: {{ regions_post_count[region.id] }}
+                </li>
+            {% else %}
+                <p>Ei alueita vielä. <a href="/create_region">Luo uusi alue</a></p>
+            {% endfor %}
+        </ul>
         <p>
             <a href="/logout">Kirjaudu ulos</a>
-        </p>
-        <p>
-            <a href="/my_page">Omasivu</a>
         </p>
     {% else %}
         <p>
@@ -23,6 +35,5 @@
             <a href="/login">Kirjaudu</a>
         </p>
     {% endif %}
-
 </body>
 </html>

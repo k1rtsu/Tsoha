@@ -2,19 +2,27 @@ from app import app
 import secrets
 from flask import render_template, request, redirect, session, abort
 import users
-from regions import get_regions
+from regions import get_regions, regions_posts_count, regions_topics_count
+
 
 #MAINPAGE
 @app.route("/")
 def index():
     username = session.get('username')
-    return render_template("index.html", username=username)
+    regions = get_regions()
+    
+    post_count = regions_posts_count()
+    topic_count = regions_topics_count()
+
+    return render_template("index.html", username=username, regions=regions, 
+                           regions_topic_count=topic_count, regions_post_count=post_count)
+
 
 #MYPAGE
 @app.route("/my_page")
 def my_page():
     username = session.get('username')
-    regions = get_regions()  # Hae kaikki alueet
+    regions = get_regions()
     return render_template("my_page.html", username=username, regions=regions)
 
 #CREATEACCOUNT
@@ -26,12 +34,12 @@ def create_account():
     
     if request.method == 'POST':
         if session.get('csrf_token') != request.form.get('csrf_token'):
-            abort(403)  # Lopeta pyyntö, jos CSRF-token ei täsmää
+            abort(403)  
         
         username = request.form['username']
         password = request.form['password']
 
-        # Käyttäjänimen ja salasanan pituuden tarkistus
+
         if len(username) < 3 or len(username) > 50:
             return render_template("create_account.html", error="Username must be 3-50 characters long.", csrf_token=session['csrf_token'])
         if len(password) < 8:
