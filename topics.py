@@ -1,7 +1,7 @@
 from flask import session
 from sqlalchemy.sql import text
 from db import db
-from posts import get_post_count
+
 
 def create_topic(name, description):
     sql = text("INSERT INTO topics (name, description) VALUES (:name, :description) RETURNING id")
@@ -13,6 +13,10 @@ def get_topics(region_id):
     result = db.session.execute(sql, {"region_id": region_id})
     return result.fetchall()
 
+def get_topic(id):
+    sql = text("SELECT id, region_id, title, description FROM topics WHERE id=:id")
+    result = db.session.execute(sql, {"id": id})
+    return result.fetchone()
 
 def get_topic_count(region_id):
     sql = text("SELECT COUNT(*) FROM topics WHERE region_id=:region_id")

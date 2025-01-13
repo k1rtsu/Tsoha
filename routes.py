@@ -3,8 +3,9 @@ import secrets
 from flask import render_template, request, redirect, session, abort
 import users
 from regions import get_regions, regions_posts_count, regions_topics_count, get_region
-from topics import get_topics, topic_posts_count
-from posts import get_post_count
+from topics import get_topics, topic_posts_count, get_topic
+from posts import get_posts
+
 
 #MAINPAGE
 @app.route("/")
@@ -18,28 +19,6 @@ def index():
     return render_template("index.html", username=username, regions=regions, 
                            regions_topic_count=topic_count, regions_post_count=post_count)
 
-#REGION
-@app.route("/region/<int:region_id>")
-def region(region_id):
-    region = get_region(region_id)
-    topics = get_topics(region_id)
-    topics_with_post_counts = [
-        {
-            "id": topic[0],
-            "title": topic[2],
-            "description": topic[3],
-            "post_count": topic_posts_count(topic[0]),
-        }
-        for topic in topics
-    ]
-    return render_template("region.html", region=region, topics=topics_with_post_counts)
-
-#MYPAGE
-@app.route("/my_page")
-def my_page():
-    username = session.get('username')
-    regions = get_regions()
-    return render_template("my_page.html", username=username, regions=regions)
 
 #CREATEACCOUNT
 @app.route('/create_account', methods=['GET', 'POST'])
@@ -88,3 +67,26 @@ def login():
 def logout():
     users.logout()
     return redirect('/')
+
+#REGION
+@app.route("/region/<int:region_id>")
+def region(region_id):
+    region = get_region(region_id)
+    topics = get_topics(region_id)
+    topics_with_post_counts = [
+        {
+            "id": topic[0],
+            "title": topic[2],
+            "description": topic[3],
+            "post_count": topic_posts_count(topic[0]),
+        }
+        for topic in topics
+    ]
+    return render_template("region.html", region=region, topics=topics_with_post_counts)
+
+#TOPIC
+@app.route("/topic/<int:topic_id>")
+def topic(topic_id):
+    topic = get_topic(topic_id)
+    posts = get_posts(topic_id)
+    return render_template("topic.html", topic=topic, posts=posts)
