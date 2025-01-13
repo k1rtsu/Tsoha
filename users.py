@@ -55,3 +55,7 @@ def create_account(username, password):
 
 def user_id():
     return session.get("user_id", 0)
+
+def user_name():
+    return session.get("username", None)
+

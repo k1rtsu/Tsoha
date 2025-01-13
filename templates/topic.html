@@ -17,7 +17,7 @@
             <ul>
                 {% for post in posts %}
                     <li>
-                        <p><strong>{{ post.author }}</strong>:</p>
+                        <p><strong>{{ author }}</strong>:</p>
                         <p>{{ post.content }}</p>
                         <small>Posted on {{ post.created_at }}</small>
                     </li>

@@ -3,7 +3,7 @@ import secrets
 from flask import render_template, request, redirect, session, abort
 import users
 from regions import get_regions, regions_posts_count, regions_topics_count, get_region
-from topics import get_topics, topic_posts_count, get_topic
+from topics import get_topics, topic_posts_count, get_topic, create_topic
 from posts import get_posts
 
 
@@ -89,4 +89,33 @@ def region(region_id):
 def topic(topic_id):
     topic = get_topic(topic_id)
     posts = get_posts(topic_id)
-    return render_template("topic.html", topic=topic, posts=posts)
+    author = users.user_name()
+    return render_template("topic.html", topic=topic, posts=posts, author=author)
+
+#NEWTOPIC
+@app.route("/region/<int:region_id>/new_topic", methods=["GET", "POST"])
+def new_topic(region_id):
+    if request.method == "GET":
+        region = get_region(region_id)  # Hakee alueen tiedot
+        if not region:
+            abort(404)  # Jos aluetta ei löydy, palautetaan virhe 404
+        return render_template("new_topic.html", region=region)
+    
+    if request.method == "POST":
+        if session.get("csrf_token") != request.form.get("csrf_token"):
+            abort(403)  # CSRF-suojauksen tarkistus
+
+        title = request.form["title"]
+        description = request.form["description"]
+        user_id = session.get("user_id")
+        
+        if not user_id:
+            return redirect("/login")  # Jos käyttäjä ei ole kirjautunut sisään, ohjataan kirjautumissivulle
+        
+        if len(title) < 5 or len(title) > 200:
+            return render_template("new_topic.html", region=get_region(region_id), error="Title must be 5-200 characters long.")
+        
+        if create_topic(region_id, title, description, user_id):
+            return redirect(f"/region/{region_id}")
+        else:
+            return render_template("new_topic.html", region=get_region(region_id), error="Failed to create topic.")
