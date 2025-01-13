@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ region.name }}</title>
+</head>
+<body>
+    <h1>Alue: {{ region.name }}</h1>
+    <p>{{ region.description }}</p>
+
+    <h2>Topicit</h2>
+    <ul>
+        {% for topic in topics %}
+            <li>
+                <a href="/topic/{{ topic.id }}">{{ topic.title }}</a> 
+                - {{ topic.description }}
+                <br>
+                <small>{{ topic.post_count }} viestiä</small>
+            </li>
+        {% else %}
+            <p>Tällä alueella ei ole vielä topicceja.</p>
+        {% endfor %}
+    </ul>
+    <p>
+        <a href="/">Takaisin pääsivulle</a>
+    </p>
+</body>
+</html>

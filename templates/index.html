@@ -20,8 +20,6 @@
                     Topics: {{ regions_topic_count[region.id] }} | 
                     Posts: {{ regions_post_count[region.id] }}
                 </li>
-            {% else %}
-                <p>Ei alueita vielä. <a href="/create_region">Luo uusi alue</a></p>
             {% endfor %}
         </ul>
         <p>

@@ -2,8 +2,9 @@ from app import app
 import secrets
 from flask import render_template, request, redirect, session, abort
 import users
-from regions import get_regions, regions_posts_count, regions_topics_count
-
+from regions import get_regions, regions_posts_count, regions_topics_count, get_region
+from topics import get_topics, topic_posts_count
+from posts import get_post_count
 
 #MAINPAGE
 @app.route("/")
@@ -17,6 +18,21 @@ def index():
     return render_template("index.html", username=username, regions=regions, 
                            regions_topic_count=topic_count, regions_post_count=post_count)
 
+#REGION
+@app.route("/region/<int:region_id>")
+def region(region_id):
+    region = get_region(region_id)
+    topics = get_topics(region_id)
+    topics_with_post_counts = [
+        {
+            "id": topic[0],
+            "title": topic[2],
+            "description": topic[3],
+            "post_count": topic_posts_count(topic[0]),
+        }
+        for topic in topics
+    ]
+    return render_template("region.html", region=region, topics=topics_with_post_counts)
 
 #MYPAGE
 @app.route("/my_page")
@@ -46,7 +62,7 @@ def create_account():
             return render_template("create_account.html", error="Password must be at least 8 characters long.", csrf_token=session['csrf_token'])
 
         if users.create_account(username, password):
-            return redirect('/my_page')
+            return redirect('/')
         
         return render_template("create_account.html", error="Username already taken or registration failed.", csrf_token=session['csrf_token'])
 
@@ -64,7 +80,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         if users.login(username, password):
-            return redirect('my_page')
+            return redirect('/')
         return render_template("login.html", error="Wrong username or password", csrf_token=session['csrf_token'])
 
 #LOGOUT

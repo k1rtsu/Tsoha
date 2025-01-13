@@ -12,9 +12,9 @@ def get_post(name):
     result = db.session.execute(sql, {"name": name})
     return result.fetchone()
 
-def get_posts():
-    sql = text("SELECT id, topic_id, content FROM posts")
-    result = db.session.execute(sql)
+def get_posts(topic_id):
+    sql = text("SELECT id, topic_id, content FROM posts WHERE topic_id=:topic_id")
+    result = db.session.execute(sql, {"topic_id": topic_id})
     return result.fetchall()
 
 def get_post_count(topic_id):

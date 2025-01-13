@@ -19,10 +19,6 @@ def get_region(id):
     result = db.session.execute(sql, {"id": id})
     return result.fetchone()
 
-def delite_region(name):
-    sql = text("DELETE FROM regions WHERE name=:name")
-    db.session.execute(sql, {"name": name})
-    db.session.commit()
 
 def regions_topics_count():
     sql_regions = text("SELECT * FROM regions")
