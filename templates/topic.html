@@ -1,31 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ topic.title }}</title>
 </head>
 <body>
-    <header>
-        <h1>{{ topic.title }}</h1>
-        <p>{{ topic.description }}</p>
-    </header>
+    <h1>{{ topic.title }}</h1>
+    <p>{{ topic.description }}</p>
 
-    <main>
-        <h2>Posts</h2>
-        {% if posts %}
-            <ul>
-                {% for post in posts %}
-                    <li>
-                        <p><strong>{{ author }}</strong>:</p>
-                        <p>{{ post.content }}</p>
-                        <small>Posted on {{ post.created_at }}</small>
-                    </li>
-                {% endfor %}
-            </ul>
+    <h2>Viestit</h2>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <p>{{ post.content }}</p>
+                <small>Kirjoittaja: {{ post.author }} | {{ post.created_at }}</small>
+            </li>
         {% else %}
-            <p>No posts in this topic yet. Be the first to post!</p>
-        {% endif %}
-    </main>
+            <p>Tässä keskustelussa ei ole vielä viestejä.</p>
+        {% endfor %}
+    </ul>
+
+    <p>
+        <a href="/topic/{{ topic.id }}/new_post">Lähetä uusi viesti</a>
+    </p>
+    
+    <p>
+        <a href="/region/{{ topic.region_id }}">Takaisin alueeseen</a>
+    </p>
 </body>
 </html>

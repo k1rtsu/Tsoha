@@ -4,7 +4,7 @@ from flask import render_template, request, redirect, session, abort
 import users
 from regions import get_regions, regions_posts_count, regions_topics_count, get_region
 from topics import get_topics, topic_posts_count, get_topic, create_topic
-from posts import get_posts
+from posts import get_posts, create_post
 
 
 #MAINPAGE
@@ -119,3 +119,19 @@ def new_topic(region_id):
             return redirect(f"/region/{region_id}")
         else:
             return render_template("new_topic.html", region=get_region(region_id), error="Failed to create topic.")
+
+#NEWPOST
+@app.route("/topic/<int:topic_id>/new_post", methods=["GET", "POST"])
+def new_post(topic_id):
+    if request.method == "GET":
+        return render_template("new_post.html", topic={"id": topic_id})
+
+    if request.method == "POST":
+        content = request.form.get("content")
+        if not content:
+            return "Content is required", 400
+
+        if create_post(topic_id, content):
+            return redirect(f"/topic/{topic_id}")
+        return "Error creating post", 500
+    
