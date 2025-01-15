@@ -4,7 +4,7 @@ from flask import render_template, request, redirect, session, abort
 import users
 from regions import get_regions, regions_posts_count, regions_topics_count, get_region
 from topics import get_topics, topic_posts_count, get_topic, create_topic
-from posts import get_posts, create_post
+from posts import get_posts, create_post, get_user_posts
 
 
 #MAINPAGE
@@ -15,9 +15,11 @@ def index():
     
     post_count = regions_posts_count()
     topic_count = regions_topics_count()
+    user_posts = get_user_posts()
 
     return render_template("index.html", username=username, regions=regions, 
-                           regions_topic_count=topic_count, regions_post_count=post_count)
+                           regions_topic_count=topic_count, regions_post_count=post_count,
+                           user_posts=user_posts)
 
 
 #CREATEACCOUNT

@@ -34,3 +34,20 @@ def create_post(topic_id, content):
     except Exception as e:
         print("Error creating post:", e)
         return False
+
+def get_user_posts():
+    user_id = session.get("user_id")
+    if not user_id:
+        return []
+
+    sql = text("""
+        SELECT posts.id, posts.content, posts.created_at, topics.title AS topic_title
+        FROM posts
+        JOIN topics ON posts.topic_id = topics.id
+        WHERE posts.user_id = :user_id
+        ORDER BY posts.created_at DESC
+    """)
+    result = db.session.execute(sql, {"user_id": user_id})
+    posts = result.fetchall()
+
+    return posts

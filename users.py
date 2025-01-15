@@ -44,18 +44,11 @@ def create_account(username, password):
         # Tallenna käyttäjän tiedot istuntoon
         session["username"] = username
         session["csrf_token"] = secrets.token_hex(16)
-        session["id"] = user_id
+        session["user_id"] = user_id
         
         return True
     except Exception as e:
         print(f"Error creating account: {e}")  # Tulosta tarkka virhekehityksessä
         return False
 
-
-
-def user_id():
-    return session.get("user_id", 0)
-
-def user_name():
-    return session.get("username", None)
 

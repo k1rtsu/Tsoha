@@ -4,6 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tervetuloa</title>
+    <style>
+        /* Tyylitellään oikeanpuoleinen osa */
+        #user-posts {
+            position: fixed;
+            right: 10px;
+            top: 100px;
+            width: 250px;
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #user-posts h3 {
+            margin-top: 0;
+        }
+
+        #user-posts ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        #user-posts li {
+            margin-bottom: 10px;
+        }
+
+        #user-posts a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        #user-posts a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <h1>Tervetuloa keskustelufoorumille!</h1>
@@ -25,6 +60,24 @@
         <p>
             <a href="/logout">Kirjaudu ulos</a>
         </p>
+
+        <!-- Käyttäjän kirjoittamat postaukset oikeassa reunassa -->
+        <div id="user-posts">
+            <h3>Omat postaukset</h3>
+            <ul>
+                {% if user_posts %}
+                    {% for post in user_posts %}
+                        <li>
+                            <a href="/topic/{{ post.topic_id }}">{{ post.topic_title }}</a><br>
+                            {{ post.content[:100] }}...  <!-- Näytetään vain 100 ensimmäistä merkkiä -->
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li>Ei postauksia.</li>
+                {% endif %}
+            </ul>
+        </div>
+
     {% else %}
         <p>
             <a href="/create_account">Luo käyttäjä</a>
