@@ -4,7 +4,7 @@ from flask import render_template, request, redirect, session, abort
 import users
 from regions import get_regions, regions_posts_count, regions_topics_count, get_region
 from topics import get_topics, topic_posts_count, get_topic, create_topic
-from posts import get_posts, create_post, get_user_posts
+from posts import get_posts, create_post, get_user_posts, delite_post
 
 
 #MAINPAGE
@@ -137,3 +137,13 @@ def new_post(topic_id):
             return redirect(f"/topic/{topic_id}")
         return "Error creating post", 500
     
+#DELETEPOST
+@app.route("/delete_post/<int:post_id>", methods=["POST"])
+def delete_post(post_id):
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect("/login")
+    
+    delite_post(post_id)
+
+    return redirect("/")

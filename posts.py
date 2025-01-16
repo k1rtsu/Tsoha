@@ -51,3 +51,17 @@ def get_user_posts():
     posts = result.fetchall()
 
     return posts
+
+def delite_post(id):
+    try:
+        user_id = session.get("user_id")
+        if not user_id:
+            raise Exception("User not logged in")
+
+        sql = text("DELETE FROM posts WHERE id=:id AND user_id=:user_id")
+        db.session.execute(sql, {"id": id, "user_id": user_id})
+        db.session.commit()
+        return True
+    except Exception as e:
+        print("Error deleting post:", e)
+        return False
