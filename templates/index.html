@@ -69,7 +69,7 @@
                     {% for post in user_posts %}
                         <li>
                             <a href="/topic/{{ post.topic_id }}">{{ post.topic_title }}</a><br>
-                            {{ post.content[:100] }}...  <!-- Näytetään vain 100 ensimmäistä merkkiä -->
+                            {{ post.content[:100] }}...  
                         </li>
                     {% endfor %}
                 {% else %}

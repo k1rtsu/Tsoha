@@ -41,7 +41,7 @@ def get_user_posts():
         return []
 
     sql = text("""
-        SELECT posts.id, posts.content, posts.created_at, topics.title AS topic_title
+        SELECT posts.id, topic_id, posts.content, posts.created_at, topics.title AS topic_title
         FROM posts
         JOIN topics ON posts.topic_id = topics.id
         WHERE posts.user_id = :user_id

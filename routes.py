@@ -91,28 +91,28 @@ def region(region_id):
 def topic(topic_id):
     topic = get_topic(topic_id)
     posts = get_posts(topic_id)
-    author = users.user_name()
+    author = session.get("username")
     return render_template("topic.html", topic=topic, posts=posts, author=author)
 
 #NEWTOPIC
 @app.route("/region/<int:region_id>/new_topic", methods=["GET", "POST"])
 def new_topic(region_id):
     if request.method == "GET":
-        region = get_region(region_id)  # Hakee alueen tiedot
+        region = get_region(region_id)  
         if not region:
-            abort(404)  # Jos aluetta ei löydy, palautetaan virhe 404
+            abort(404)  
         return render_template("new_topic.html", region=region)
     
     if request.method == "POST":
         if session.get("csrf_token") != request.form.get("csrf_token"):
-            abort(403)  # CSRF-suojauksen tarkistus
+            abort(403) 
 
         title = request.form["title"]
         description = request.form["description"]
         user_id = session.get("user_id")
         
         if not user_id:
-            return redirect("/login")  # Jos käyttäjä ei ole kirjautunut sisään, ohjataan kirjautumissivulle
+            return redirect("/login")  
         
         if len(title) < 5 or len(title) > 200:
             return render_template("new_topic.html", region=get_region(region_id), error="Title must be 5-200 characters long.")
