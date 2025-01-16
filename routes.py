@@ -1,9 +1,9 @@
 from app import app
 import secrets
-from flask import render_template, request, redirect, session, abort
+from flask import render_template, request, redirect, session, abort, flash
 import users
 from regions import get_regions, regions_posts_count, regions_topics_count, get_region
-from topics import get_topics, topic_posts_count, get_topic, create_topic
+from topics import get_topics, topic_posts_count, get_topic, create_topic, delete_topic, get_author
 from posts import get_posts, create_post, get_user_posts, delite_post
 
 
@@ -86,33 +86,48 @@ def region(region_id):
     ]
     return render_template("region.html", region=region, topics=topics_with_post_counts)
 
+
 #TOPIC
-@app.route("/topic/<int:topic_id>")
+@app.route("/topic/<int:topic_id>", methods=["GET", "POST"])
 def topic(topic_id):
+    user_id = session.get("user_id")
+    
     topic = get_topic(topic_id)
     posts = get_posts(topic_id)
     author = session.get("username")
-    return render_template("topic.html", topic=topic, posts=posts, author=author)
+    author_id = get_author(topic_id)
+    
+    if request.method == "POST":
+        if author_id == user_id:
+            delete_topic(topic_id)
+            flash("Topic poistettu onnistuneesti.")
+            return redirect("/")
+        else:
+            flash("Sinulla ei ole oikeuksia poistaa tätä topicia.")
+            return redirect(f"/topic/{topic_id}")
+    
+    return render_template("topic.html", topic=topic, posts=posts, author=author, author_id=author_id)
+
 
 #NEWTOPIC
 @app.route("/region/<int:region_id>/new_topic", methods=["GET", "POST"])
 def new_topic(region_id):
     if request.method == "GET":
-        region = get_region(region_id)  
+        region = get_region(region_id)
         if not region:
             abort(404)  
         return render_template("new_topic.html", region=region)
     
     if request.method == "POST":
         if session.get("csrf_token") != request.form.get("csrf_token"):
-            abort(403) 
+            abort(403)
 
         title = request.form["title"]
         description = request.form["description"]
         user_id = session.get("user_id")
         
         if not user_id:
-            return redirect("/login")  
+            return redirect("/login")
         
         if len(title) < 5 or len(title) > 200:
             return render_template("new_topic.html", region=get_region(region_id), error="Title must be 5-200 characters long.")
@@ -121,6 +136,7 @@ def new_topic(region_id):
             return redirect(f"/region/{region_id}")
         else:
             return render_template("new_topic.html", region=get_region(region_id), error="Failed to create topic.")
+
 
 #NEWPOST
 @app.route("/topic/<int:topic_id>/new_post", methods=["GET", "POST"])
@@ -136,14 +152,16 @@ def new_post(topic_id):
         if create_post(topic_id, content):
             return redirect(f"/topic/{topic_id}")
         return "Error creating post", 500
-    
+
+
 #DELETEPOST
 @app.route("/delete_post/<int:post_id>", methods=["POST"])
 def delete_post(post_id):
     user_id = session.get("user_id")
     if not user_id:
+        flash("Et ole kirjautunut sisään.")
         return redirect("/login")
-    
+ 
     delite_post(post_id)
-
+    flash("Postau poistettu onnistuneesti.")
     return redirect("/")

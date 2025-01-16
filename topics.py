@@ -34,3 +34,16 @@ def create_topic(region_id, title, description, user_id):
     except Exception as e:
         print("Error creating topic:", e)
         return False
+    
+def delete_topic(topic_id):
+    sql = text("""
+        DELETE FROM topics
+        WHERE id = :topic_id
+    """)
+    db.session.execute(sql, {"topic_id": topic_id})
+    db.session.commit()
+
+def get_author(topic_id):
+    sql = text("SELECT created_by FROM topics WHERE id=:topic_id")
+    result = db.session.execute(sql, {"topic_id": topic_id})
+    return result.fetchone()[0]

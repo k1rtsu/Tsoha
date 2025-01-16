@@ -9,6 +9,16 @@
     <h1>{{ topic.title }}</h1>
     <p>{{ topic.description }}</p>
 
+    {% if session.get("user_id") == author_id %}
+    <form action="/topic/{{ topic.id }}" method="POST" style="margin-top: 20px;">
+        <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän topicin?');">
+            Poista tämä topic
+        </button>
+    </form>
+    {% else %}
+    <p>Sinulla ei ole oikeuksia tämän topicin poistamiseen.</p>
+    {% endif %}
+
     <h2>Viestit</h2>
     <ul>
         {% for post in posts %}
