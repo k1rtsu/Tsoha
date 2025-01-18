@@ -49,3 +49,9 @@ def regions_posts_count():
         regions_posts[r[0]] =  post_count
 
     return regions_posts
+
+
+def search_regions(query):
+    sql = text("SELECT id, name, description FROM regions WHERE name ILIKE :query")
+    results = db.session.execute(sql, {"query": f"%{query}%"}).fetchall()
+    return results

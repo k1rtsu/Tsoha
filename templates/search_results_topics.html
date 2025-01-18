@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic-hakutulokset: {{ query }}</title>
+</head>
+<body>
+    <h1>Topic-hakutulokset: "{{ query }}"</h1>
+
+    {% if results %}
+        <h2>Löydetyt topicit:</h2>
+        <ul>
+            {% for topic in results %}
+                <li>
+                    <a href="/topic/{{ topic.id }}">{{ topic.title }}</a>  <!-- Linkki topicin yksityiskohtiin -->
+                    <p>{{ topic.description }}</p>  <!-- Topicin kuvaus -->
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Ei löytynyt topicteja hakusanalla "{{ query }}".</p>
+    {% endif %}
+    
+    <a href="/region/{{ region_id }}">Takaisin alueelle</a>
+</body>
+</html>

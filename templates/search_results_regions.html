@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hakutulokset</title>
+</head>
+<body>
+    <h1>Hakutulokset haulle "{{ query }}"</h1>
+    {% if results %}
+        <ul>
+            {% for region in results %}
+                <li>
+                    <a href="/region/{{ region.id }}">{{ region.name }}</a>
+                    <p>{{ region.description }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Ei tuloksia haulle "{{ query }}".</p>
+    {% endif %}
+    <p><a href="/">Takaisin pääsivulle</a></p>
+</body>
+</html>
+

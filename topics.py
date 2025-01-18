@@ -47,3 +47,14 @@ def get_author(topic_id):
     sql = text("SELECT created_by FROM topics WHERE id=:topic_id")
     result = db.session.execute(sql, {"topic_id": topic_id})
     return result.fetchone()[0]
+
+def search_topics(query, region_id):
+    sql = text("""
+        SELECT id, region_id, title, description 
+        FROM topics 
+        WHERE title ILIKE :query 
+        AND region_id = :region_id
+    """)
+    # Tässä varmistetaan, että molemmat parametrit lähetetään
+    results = db.session.execute(sql, {"query": f"%{query}%", "region_id": region_id}).fetchall()
+    return results

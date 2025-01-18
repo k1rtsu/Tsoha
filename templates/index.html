@@ -83,6 +83,11 @@
             </ul>
         </div>
 
+        <form action="/search" method="GET">
+            <input type="text" name="query" placeholder="Hae aluetta nimellä" required>
+            <button type="submit">Hae</button>
+        </form>
+
     {% else %}
         <p>
             <a href="/create_account">Luo käyttäjä</a>

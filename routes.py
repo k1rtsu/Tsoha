@@ -2,12 +2,12 @@ from app import app
 import secrets
 from flask import render_template, request, redirect, session, abort, flash
 import users
-from regions import get_regions, regions_posts_count, regions_topics_count, get_region
-from topics import get_topics, topic_posts_count, get_topic, create_topic, delete_topic, get_author
+from regions import get_regions, regions_posts_count, regions_topics_count, get_region, search_regions
+from topics import get_topics, topic_posts_count, get_topic, create_topic, delete_topic, get_author, search_topics
 from posts import get_posts, create_post, get_user_posts, delite_post
 
 
-#MAINPAGE
+#MAIN_PAGE
 @app.route("/")
 def index():
     username = session.get('username')
@@ -22,7 +22,7 @@ def index():
                            user_posts=user_posts)
 
 
-#CREATEACCOUNT
+#CREATE_ACCOUNT
 @app.route('/create_account', methods=['GET', 'POST'])
 def create_account():
     if request.method == 'GET':
@@ -110,7 +110,7 @@ def topic(topic_id):
     return render_template("topic.html", topic=topic, posts=posts, author=author, author_id=author_id, role=role)
 
 
-#NEWTOPIC
+#NEW_TOPIC
 @app.route("/region/<int:region_id>/new_topic", methods=["GET", "POST"])
 def new_topic(region_id):
     if request.method == "GET":
@@ -139,7 +139,7 @@ def new_topic(region_id):
             return render_template("new_topic.html", region=get_region(region_id), error="Failed to create topic.")
 
 
-#NEWPOST
+#NEW_POST
 @app.route("/topic/<int:topic_id>/new_post", methods=["GET", "POST"])
 def new_post(topic_id):
     if request.method == "GET":
@@ -155,7 +155,7 @@ def new_post(topic_id):
         return "Error creating post", 500
 
 
-#DELETEPOST
+#DELETE_POST
 @app.route("/delete_post/<int:post_id>", methods=["POST"])
 def delete_post(post_id):
     user_id = session.get("user_id")
@@ -166,3 +166,28 @@ def delete_post(post_id):
     delite_post(post_id)
     flash("Postau poistettu onnistuneesti.")
     return redirect("/")
+
+#REGION_SEARCH
+@app.route("/search", methods=["GET"])
+def search():
+    query = request.args.get("query", "").strip()
+    if not query:
+        flash("Anna hakusana.")
+        return redirect("/")
+    
+    results = search_regions(query)
+    
+    return render_template("search_results_regions.html", query=query, results=results)
+
+#TOPICT_SEARCH
+@app.route("/region/<int:region_id>/topic_search", methods=["GET"])
+def topic_search(region_id):
+    query = request.args.get("query", "").strip()
+    
+    if not query:
+        flash("Anna hakusana.")
+        return redirect(f"/region/{region_id}")
+    
+    results = search_topics(query, region_id)
+    
+    return render_template("search_results_topics.html", query=query, results=results, region_id=region_id)

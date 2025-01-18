@@ -9,6 +9,13 @@
     <h1>Alue: {{ region.name }}</h1>
     <p>{{ region.description }}</p>
 
+    <!-- Topic-hakukenttä -->
+    <form action="/region/{{ region.id }}/topic_search" method="GET" style="margin-bottom: 20px;">
+        <label for="query">Hae topicceja:</label>
+        <input type="text" id="query" name="query" placeholder="Hakusana">
+        <button type="submit">Hae</button>
+    </form>
+
     <!-- Nappi uuden keskustelun luomiseen -->
     <p>
         <a href="/region/{{ region.id }}/new_topic">
