@@ -2,7 +2,7 @@ from app import app
 import secrets
 from flask import render_template, request, redirect, session, abort, flash
 import users
-from regions import get_regions, regions_posts_count, regions_topics_count, get_region, search_regions, create_region
+from regions import get_regions, regions_posts_count, regions_topics_count, get_region, search_regions, create_region, delite_region
 from topics import get_topics, topic_posts_count, get_topic, create_topic, delete_topic, get_author, search_topics
 from posts import get_posts, create_post, get_user_posts, delite_post, search_posts, get_post
 from comments import create_comment, get_comments_for_post, delete_comment, get_comment
@@ -39,7 +39,15 @@ def create_new_region():
         
         create_region(name, description)
         return redirect("/")
-
+    
+#DELETE_REGION(ADMIN)
+@app.route("/delete_region/<int:region_id>", methods=["POST"])
+def delete_region(region_id):
+    if session.get("role") != "admin":
+        return redirect("/")
+    delite_region(region_id)
+    flash("Region poistettu onnistuneesti.")
+    return redirect("/")
 
 
 #CREATE_ACCOUNT

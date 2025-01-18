@@ -61,6 +61,16 @@
                     <br>
                     Topics: {{ regions_topic_count[region.id] }} | 
                     Posts: {{ regions_post_count[region.id] }}
+
+                    {% if session.get("role") == "admin" %}
+                    <form action="/delete_region/{{ region.id }}" method="POST" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän alueen?');">
+                            Poista
+                        </button>
+                    </form>
+                    {% endif %}
+
+
                 </li>
             {% endfor %}
         </ul>

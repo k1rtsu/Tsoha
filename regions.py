@@ -55,3 +55,8 @@ def search_regions(query):
     sql = text("SELECT id, name, description FROM regions WHERE name ILIKE :query")
     results = db.session.execute(sql, {"query": f"%{query}%"}).fetchall()
     return results
+
+def delite_region(id):
+    sql = text("DELETE FROM regions WHERE id=:id")
+    db.session.execute(sql, {"id": id})
+    db.session.commit()
