@@ -96,9 +96,10 @@ def topic(topic_id):
     posts = get_posts(topic_id)
     author = session.get("username")
     author_id = get_author(topic_id)
+    role = session.get("role")
     
     if request.method == "POST":
-        if author_id == user_id:
+        if author_id == user_id or role == "admin":
             delete_topic(topic_id)
             flash("Topic poistettu onnistuneesti.")
             return redirect("/")
@@ -106,7 +107,7 @@ def topic(topic_id):
             flash("Sinulla ei ole oikeuksia poistaa tätä topicia.")
             return redirect(f"/topic/{topic_id}")
     
-    return render_template("topic.html", topic=topic, posts=posts, author=author, author_id=author_id)
+    return render_template("topic.html", topic=topic, posts=posts, author=author, author_id=author_id, role=role)
 
 
 #NEWTOPIC

@@ -9,7 +9,7 @@
     <h1>{{ topic.title }}</h1>
     <p>{{ topic.description }}</p>
 
-    {% if session.get("user_id") == author_id %}
+    {% if session.get("user_id") == author_id or role == "admin" %}
     <form action="/topic/{{ topic.id }}" method="POST" style="margin-top: 20px;">
         <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän topicin?');">
             Poista tämä topic
@@ -25,6 +25,13 @@
             <li>
                 <p>{{ post.content }}</p>
                 <small>Kirjoittaja: {{ post.author }} | {{ post.created_at }}</small>
+                {% if session.get("user_id") == post.user_id or role == "admin" %}
+                <form action="/delete_post/{{ post.id }}" method="POST" style="display: inline;">
+                    <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän viestin?');">
+                        Poista viesti
+                    </button>
+                </form>
+                {% endif %}
             </li>
         {% else %}
             <p>Tässä keskustelussa ei ole vielä viestejä.</p>

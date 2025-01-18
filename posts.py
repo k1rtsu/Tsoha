@@ -58,7 +58,7 @@ def delite_post(id):
         if not user_id:
             raise Exception("User not logged in")
 
-        sql = text("DELETE FROM posts WHERE id=:id AND user_id=:user_id")
+        sql = text("DELETE FROM posts WHERE id=:id")
         db.session.execute(sql, {"id": id, "user_id": user_id})
         db.session.commit()
         return True
