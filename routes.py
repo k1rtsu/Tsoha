@@ -5,7 +5,7 @@ import users
 from regions import get_regions, regions_posts_count, regions_topics_count, get_region, search_regions
 from topics import get_topics, topic_posts_count, get_topic, create_topic, delete_topic, get_author, search_topics
 from posts import get_posts, create_post, get_user_posts, delite_post, search_posts, get_post
-from comments import create_comment, get_comments_for_post
+from comments import create_comment, get_comments_for_post, delete_comment, get_comment
 
 
 #MAIN_PAGE
@@ -225,3 +225,19 @@ def add_comment(post_id):
     else:
         flash("Virhe lisättäessä kommenttia.")
     return redirect(f"/topic/{get_post(post_id).topic_id}")
+
+
+#DELETE_COMMENT
+@app.route("/delete_comment/<int:comment_id>", methods=["POST"])
+def delete_comment_route(comment_id):
+    post_id = get_comment(comment_id).post_id
+    topic_id = get_post(post_id).topic_id
+
+    user_id = session.get("user_id")
+    if delete_comment(comment_id):
+        flash("Kommentti poistettu onnistuneesti.")
+    else:
+        flash("Kommentin poistaminen epäonnistui.")
+
+    return redirect(f"/topic/{topic_id}")
+

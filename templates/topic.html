@@ -47,6 +47,15 @@
                             <li>
                                 <p>{{ comment.comment_content }}</p>
                                 <small>Kirjoittaja: {{ comment.author_name }} | {{ comment.comment_created_at }}</small>
+                                
+                                {% if session.get("user_id") == comment.author_id or role == "admin" %}
+                                <!-- Poistopainike kommentille -->
+                                <form action="/delete_comment/{{ comment.comment_id }}" method="POST" style="display: inline;">
+                                    <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän kommentin?');">
+                                        Poista kommentti
+                                    </button>
+                                </form>
+                                {% endif %}
                             </li>
                         {% else %}
                             <p>Tässä viestissä ei ole vielä kommentteja.</p>
