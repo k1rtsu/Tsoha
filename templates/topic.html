@@ -19,6 +19,13 @@
     <p>Sinulla ei ole oikeuksia tämän topicin poistamiseen.</p>
     {% endif %}
 
+    <h2>Etsi viestejä</h2>
+    <form action="/post_search" method="GET" style="margin-bottom: 20px;">
+        <input type="hidden" name="topic_id" value="{{ topic.id }}">
+        <input type="text" name="query" placeholder="Hae viestejä..." required>
+        <button type="submit">Hae</button>
+    </form>
+
     <h2>Viestit</h2>
     <ul>
         {% for post in posts %}
@@ -31,6 +38,30 @@
                         Poista viesti
                     </button>
                 </form>
+                {% endif %}
+
+                <h3>Kommentit</h3>
+                <ul>
+                    {% if post.id in post_comments %}
+                        {% for comment in post_comments[post.id] %}
+                            <li>
+                                <p>{{ comment.comment_content }}</p>
+                                <small>Kirjoittaja: {{ comment.author_name }} | {{ comment.comment_created_at }}</small>
+                            </li>
+                        {% else %}
+                            <p>Tässä viestissä ei ole vielä kommentteja.</p>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+
+                {% if session.get("user_id") %}
+                <h4>Lisää kommentti</h4>
+                <form action="/post/{{ post.id }}/add_comment" method="POST">
+                    <textarea name="content" placeholder="Kirjoita kommentti..." required></textarea>
+                    <button type="submit">Lähetä kommentti</button>
+                </form>
+                {% else %}
+                    <p>Kirjaudu sisään lisätäksesi kommentin.</p>
                 {% endif %}
             </li>
         {% else %}

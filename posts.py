@@ -65,3 +65,18 @@ def delite_post(id):
     except Exception as e:
         print("Error deleting post:", e)
         return False
+
+
+def search_posts(content, topic_id):
+    sql = text("""
+        SELECT posts.id, topic_id, posts.content, posts.created_at, topics.title AS topic_title
+        FROM posts
+        JOIN topics ON posts.topic_id = topics.id
+        WHERE posts.content ILIKE :content
+        AND topic_id = :topic_id
+        ORDER BY posts.created_at DESC
+    """)
+    result = db.session.execute(sql, {"content": "%" + content + "%", "topic_id": topic_id})
+    return result.fetchall()
+
+

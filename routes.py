@@ -4,7 +4,8 @@ from flask import render_template, request, redirect, session, abort, flash
 import users
 from regions import get_regions, regions_posts_count, regions_topics_count, get_region, search_regions
 from topics import get_topics, topic_posts_count, get_topic, create_topic, delete_topic, get_author, search_topics
-from posts import get_posts, create_post, get_user_posts, delite_post
+from posts import get_posts, create_post, get_user_posts, delite_post, search_posts, get_post
+from comments import create_comment, get_comments_for_post
 
 
 #MAIN_PAGE
@@ -98,6 +99,10 @@ def topic(topic_id):
     author_id = get_author(topic_id)
     role = session.get("role")
     
+    post_comments = {}
+    for post in posts:
+        post_comments[post.id] = get_comments_for_post(post.id)
+    
     if request.method == "POST":
         if author_id == user_id or role == "admin":
             delete_topic(topic_id)
@@ -107,7 +112,7 @@ def topic(topic_id):
             flash("Sinulla ei ole oikeuksia poistaa tätä topicia.")
             return redirect(f"/topic/{topic_id}")
     
-    return render_template("topic.html", topic=topic, posts=posts, author=author, author_id=author_id, role=role)
+    return render_template("topic.html", topic=topic, posts=posts, author=author, author_id=author_id, role=role, post_comments=post_comments)
 
 
 #NEW_TOPIC
@@ -191,3 +196,32 @@ def topic_search(region_id):
     results = search_topics(query, region_id)
     
     return render_template("search_results_topics.html", query=query, results=results, region_id=region_id)
+
+
+#POST_SEARCH
+@app.route("/post_search", methods=["GET"])
+def post_search():
+    query = request.args.get("query", "").strip()
+    topic_id = request.args.get("topic_id")
+    
+    if not query:
+        flash("Anna hakusana.")
+        return redirect(f"/topic/{topic_id}")
+    
+    results = search_posts(query, topic_id)
+    
+    return render_template("search_results_posts.html", query=query, results=results, topic_id=topic_id)
+
+#CREATE_COMMENT
+@app.route("/post/<int:post_id>/add_comment", methods=["POST"])
+def add_comment(post_id):
+    content = request.form.get("content", "").strip()
+    if not content:
+        flash("Kommentti ei voi olla tyhjä.")
+        return redirect(f"/post/{post_id}")
+
+    if create_comment(post_id, content):
+        flash("Kommentti lisätty!")
+    else:
+        flash("Virhe lisättäessä kommenttia.")
+    return redirect(f"/topic/{get_post(post_id).topic_id}")

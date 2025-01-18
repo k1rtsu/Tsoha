@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakutulokset: {{ query }}</title>
+</head>
+<body>
+    <h1>Hakutulokset: "{{ query }}"</h1>
+    <p>
+        <a href="/topic/{{ topic_id }}">Takaisin keskusteluun</a>
+    </p>
+    <ul>
+        {% for result in results %}
+            <li>
+                <p>{{ result.content }}</p>
+                <small>Kirjoitettu: {{ result.created_at }}</small>
+                <br>
+            </li>
+        {% else %}
+            <p>Ei löytynyt viestejä hakusanalla "{{ query }}".</p>
+        {% endfor %}
+    </ul>
+</body>
+</html>
