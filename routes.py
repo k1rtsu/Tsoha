@@ -2,7 +2,7 @@ from app import app
 import secrets
 from flask import render_template, request, redirect, session, abort, flash
 import users
-from regions import get_regions, regions_posts_count, regions_topics_count, get_region, search_regions
+from regions import get_regions, regions_posts_count, regions_topics_count, get_region, search_regions, create_region
 from topics import get_topics, topic_posts_count, get_topic, create_topic, delete_topic, get_author, search_topics
 from posts import get_posts, create_post, get_user_posts, delite_post, search_posts, get_post
 from comments import create_comment, get_comments_for_post, delete_comment, get_comment
@@ -21,6 +21,25 @@ def index():
     return render_template("index.html", username=username, regions=regions, 
                            regions_topic_count=topic_count, regions_post_count=post_count,
                            user_posts=user_posts)
+
+
+#CREATE_REGION(ADMIN)
+@app.route("/create_region", methods=["GET", "POST"])
+def create_new_region():
+    if session.get("role") != "admin":
+        return redirect("/")
+    if request.method == "GET":
+        return render_template("create_region.html")
+    
+    if request.method == "POST":
+        name = request.form.get("name")
+        description = request.form.get("description")
+        if not name or not description:
+            return render_template("create_region.html", error="Name and description are required.")
+        
+        create_region(name, description)
+        return redirect("/")
+
 
 
 #CREATE_ACCOUNT
@@ -240,4 +259,3 @@ def delete_comment_route(comment_id):
         flash("Kommentin poistaminen epäonnistui.")
 
     return redirect(f"/topic/{topic_id}")
-

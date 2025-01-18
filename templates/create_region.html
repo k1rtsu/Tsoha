@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisää uusi alue</title>
+</head>
+<body>
+    <h1>Lisää uusi alue</h1>
+
+    <!-- Näytetään virheilmoitus, jos lomakkeen tiedot ovat puutteelliset -->
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form action="/create_region" method="POST">
+        <label for="name">Alueen nimi:</label><br>
+        <input type="text" id="name" name="name" placeholder="Kirjoita alueen nimi" required><br><br>
+
+        <label for="description">Kuvaus:</label><br>
+        <textarea id="description" name="description" placeholder="Kirjoita alueen kuvaus" rows="4" required></textarea><br><br>
+
+        <button type="submit">Luo alue</button>
+    </form>
+
+    <p>
+        <a href="/">Palaa takaisin etusivulle</a>
+    </p>
+</body>
+</html>

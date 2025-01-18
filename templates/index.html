@@ -44,6 +44,13 @@
     <h1>Tervetuloa keskustelufoorumille!</h1>
     {% if username %}
         <p>Hei, {{ username }}!</p>
+        {% if session.get("role") == "admin" %}
+        <div style="margin-top: 20px;">
+            <a href="/create_region">
+                <button type="button">Lisää uusi alue</button>
+            </a>
+        </div>
+        {% endif %}
 
         <h2>Alueet</h2>
         <ul>
