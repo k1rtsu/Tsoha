@@ -1,4 +1,4 @@
-# Tsoha
+# Tsoha-Naapurosto
 
 Tietokanta ja web-ohjelmointi kurssi
 
