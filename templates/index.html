@@ -64,6 +64,7 @@
 
                     {% if session.get("role") == "admin" %}
                     <form action="/delete_region/{{ region.id }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                         <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän alueen?');">
                             Poista
                         </button>
@@ -88,6 +89,7 @@
                             <a href="/topic/{{ post.topic_id }}">{{ post.topic_title }}</a><br>
                             {{ post.content[:100] }}...  
                             <form action="/delete_post/{{ post.id }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                                 <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän postauksen?');">
                                     Poista
                                 </button>

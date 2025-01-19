@@ -32,6 +32,8 @@ def create_new_region():
         return render_template("create_region.html")
     
     if request.method == "POST":
+        if session.get("csrf_token") != request.form["csrf_token"]:
+            abort(403)
         name = request.form.get("name")
         description = request.form.get("description")
         if not name or not description:
@@ -85,7 +87,7 @@ def login():
     
     if request.method == 'POST':
         if session['csrf_token'] != request.form['csrf_token']:
-            return redirect('/login')
+            abort(403)
         username = request.form['username']
         password = request.form['password']
         if users.login(username, password):
@@ -131,6 +133,8 @@ def topic(topic_id):
         post_comments[post.id] = get_comments_for_post(post.id)
     
     if request.method == "POST":
+        if session.get("csrf_token") != request.form["csrf_token"]:
+            abort(403)
         if author_id == user_id or role == "admin":
             delete_topic(topic_id)
             flash("Topic poistettu onnistuneesti.")
@@ -178,6 +182,8 @@ def new_post(topic_id):
         return render_template("new_post.html", topic={"id": topic_id})
 
     if request.method == "POST":
+        if session.get("csrf_token") != request.form["csrf_token"]:
+            abort(403)
         content = request.form.get("content")
         if not content:
             return "Content is required", 400
@@ -242,6 +248,8 @@ def post_search():
 #CREATE_COMMENT
 @app.route("/post/<int:post_id>/add_comment", methods=["POST"])
 def add_comment(post_id):
+    if session.get("csrf_token") != request.form["csrf_token"]:
+        abort(403)
     content = request.form.get("content", "").strip()
     if not content:
         flash("Kommentti ei voi olla tyhjä.")
@@ -257,10 +265,11 @@ def add_comment(post_id):
 #DELETE_COMMENT
 @app.route("/delete_comment/<int:comment_id>", methods=["POST"])
 def delete_comment_route(comment_id):
+    if session.get("csrf_token") != request.form["csrf_token"]:
+        abort(403)
     post_id = get_comment(comment_id).post_id
     topic_id = get_post(post_id).topic_id
 
-    user_id = session.get("user_id")
     if delete_comment(comment_id):
         flash("Kommentti poistettu onnistuneesti.")
     else:

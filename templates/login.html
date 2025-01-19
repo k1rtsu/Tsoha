@@ -14,7 +14,7 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
         <br>
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <button type="submit">Login</button>
     </form>
     {% if error %}

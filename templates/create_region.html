@@ -16,6 +16,7 @@
     <form action="/create_region" method="POST">
         <label for="name">Alueen nimi:</label><br>
         <input type="text" id="name" name="name" placeholder="Kirjoita alueen nimi" required><br><br>
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 
         <label for="description">Kuvaus:</label><br>
         <textarea id="description" name="description" placeholder="Kirjoita alueen kuvaus" rows="4" required></textarea><br><br>

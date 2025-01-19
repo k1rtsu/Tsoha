@@ -78,5 +78,3 @@ def search_posts(content, topic_id):
     """)
     result = db.session.execute(sql, {"content": "%" + content + "%", "topic_id": topic_id})
     return result.fetchall()
-
-
