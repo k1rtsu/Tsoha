@@ -11,13 +11,19 @@ Ominaisuudet
 Käyttäjän oikeudet:
 
 -Kirjautuminen sisään ja ulos sekä käyttäjätilin luominen.
+
 -Uusien keskusteluaiheiden (topiceja) luominen valitussa kategoriassa.
+
 -Viestien kirjoittaminen keskusteluihin.
+
 -Kommenttien lisääminen viesteihin.
+
 -Viestien ja kommenttien poistaminen (oma sisältö).
+
 -Alueiden, topiccie, postauksien ja viestien etsiminen hakutoiminnon avulla.
 
 Ylläpitäjän oikeudet:
 
 -Kaikkien aiheiden (topiceja), viestien ja kommenttien poistaminen.
+
 -Alueiden (region) lisääminen ja poistaminen.
