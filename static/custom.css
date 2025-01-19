@@ -1,15 +1,63 @@
+/* custom.css */
 
+/* Yleiset asetukset */
 body {
-    background-color: #000000; 
-    color: #FFFFFF; 
-    font-family: 'Arial', sans-serif; 
+    background-color: #000000; /* Musta taustaväri */
+    color: #FFFFFF; /* Valkoinen teksti */
+    font-family: 'Arial', sans-serif; /* Minimalistinen fontti suorilla kulmilla */
     margin: 0;
     padding: 0;
+}
+
+/* Keskitetty tervetuloa-teksti ja käyttäjän tervehdys */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Pääasettelu */
+.container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Haku vasemmalla */
+.search {
+    flex: 1;
+    background-color: #1a1a1a; /* Tumma harmaa taustaväri */
+    padding: 1em;
+    border-radius: 5px;
+    margin-right: 1em;
+}
+
+/* Alueet keskellä */
+.regions {
+    flex: 2;
+    background-color: #1a1a1a; /* Tumma harmaa taustaväri */
+    padding: 1em;
+    border-radius: 5px;
+    margin-right: 1em;
+}
+
+/* Käyttäjän omat postaukset oikealla */
+.user-posts {
+    flex: 1;
+    background-color: #1a1a1a; /* Tumma harmaa taustaväri */
+    padding: 1em;
+    border-radius: 5px;
+}
+
+/* Topicit oikealla */
+.topics {
+    flex: 3;
+    background-color: #1a1a1a; /* Tumma harmaa taustaväri */
+    padding: 1em;
+    border-radius: 5px;
+    margin-left: 1em;
 }
 
 /* Otsikot */
@@ -23,7 +71,7 @@ form {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    background-color: #1a1a1a; 
+    background-color: #1a1a1a; /* Tumma harmaa taustaväri lomakkeille */
     padding: 1em;
     border-radius: 5px;
 }
@@ -37,17 +85,36 @@ input, textarea, button {
 }
 
 input, textarea {
-    background-color: #333333; 
+    background-color: #333333; /* Tumma taustaväri syöttökentille */
     color: #FFFFFF;
 }
 
 button {
-    background-color: #444444; 
+    background-color: #444444; /* Tumma taustaväri painikkeille */
     color: #FFFFFF;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #555555; 
+    background-color: #555555; /* Vaaleampi harmaa hover-efekti */
 }
 
+/* Kirjaudu ulos -nappi oikeassa ylänurkassa */
+.logout {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* Pienempi poistopainike ja postauksen otsikon oikealle puolella */
+.user-posts li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-posts button {
+    padding: 0.2em 0.5em;
+    font-size: 0.8em;
+    margin-left: 10px;
+}

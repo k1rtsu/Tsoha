@@ -6,53 +6,55 @@
     <link rel="stylesheet" href="/static/custom.css">
 </head>
 <body>
-    <h1>Tervetuloa keskustelufoorumille!</h1>
-    {% if username %}
-        <p>Hei, {{ username }}!</p>
-        {% if session.get("role") == "admin" %}
-        <div style="margin-top: 20px;">
-            <a href="/create_region">
-                <button type="button">Lisää uusi alue</button>
-            </a>
-        </div>
+    <div class="header">
+        <h1>Tervetuloa keskustelufoorumille!</h1>
+        {% if username %}
+            <p>Hei, {{ username }}!</p>
         {% endif %}
+    </div>
+    {% if username %}
+        <a href="/logout" class="logout">
+            <button type="button">Kirjaudu ulos</button>
+        </a>
+    {% endif %}
+    <div class="container">
+        <div class="search">
+            <h4>Haku</h4>
+            <form action="/search" method="GET">
+                <input type="text" name="query" placeholder="Hae aluetta nimellä" required>
+                <button type="submit">Hae</button>
+            </form>
+        </div>
+        <div class="regions">
+            <h2>Alueet</h2>
+            <ul>
+                {% for region in regions %}
+                    <li>
+                        <a href="/region/{{ region.id }}">{{ region.name }}</a> 
+                        - {{ region.description }}
+                        <br>
+                        Topics: {{ regions_topic_count[region.id] }} | 
+                        Posts: {{ regions_post_count[region.id] }}
 
-        <h2>Alueet</h2>
-        <ul>
-            {% for region in regions %}
-                <li>
-                    <a href="/region/{{ region.id }}">{{ region.name }}</a> 
-                    - {{ region.description }}
-                    <br>
-                    Topics: {{ regions_topic_count[region.id] }} | 
-                    Posts: {{ regions_post_count[region.id] }}
-
-                    {% if session.get("role") == "admin" %}
-                    <form action="/delete_region/{{ region.id }}" method="POST" style="display:inline;">
-                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                        <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän alueen?');">
-                            Poista
-                        </button>
-                    </form>
-                    {% endif %}
-
-
-                </li>
-            {% endfor %}
-        </ul>
-        <p>
-            <a href="/logout">Kirjaudu ulos</a>
-        </p>
-
-        <!-- Käyttäjän kirjoittamat postaukset oikeassa reunassa -->
-        <div id="user-posts">
+                        {% if session.get("role") == "admin" %}
+                        <form action="/delete_region/{{ region.id }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                            <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän alueen?');">
+                                Poista
+                            </button>
+                        </form>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="user-posts">
             <h3>Omat postaukset</h3>
             <ul>
                 {% if user_posts %}
                     {% for post in user_posts %}
                         <li>
-                            <a href="/topic/{{ post.topic_id }}">{{ post.topic_title }}</a><br>
-                            {{ post.content[:100] }}...  
+                            <a href="/topic/{{ post.topic_id }}">{{ post.topic_title }}</a>
                             <form action="/delete_post/{{ post.id }}" method="POST" style="display:inline;">
                                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
                                 <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän postauksen?');">
@@ -66,12 +68,15 @@
                 {% endif %}
             </ul>
         </div>
-
-        <form action="/search" method="GET">
-            <input type="text" name="query" placeholder="Hae aluetta nimellä" required>
-            <button type="submit">Hae</button>
-        </form>
-
+    </div>
+    {% if username %}
+        {% if session.get("role") == "admin" %}
+        <div style="margin-top: 20px;">
+            <a href="/create_region">
+                <button type="button">Lisää uusi alue</button>
+            </a>
+        </div>
+        {% endif %}
     {% else %}
         <p>
             <a href="/create_account">Luo käyttäjä</a>

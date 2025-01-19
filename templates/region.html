@@ -6,38 +6,50 @@
     <link rel="stylesheet" href="/static/custom.css">
 </head>
 <body>
-    <h1>Alue: {{ region.name }}</h1>
-    <p>{{ region.description }}</p>
-
-    <!-- Topic-hakukenttä -->
-    <form action="/region/{{ region.id }}/topic_search" method="GET" style="margin-bottom: 20px;">
-        <label for="query">Hae topicceja:</label>
-        <input type="text" id="query" name="query" placeholder="Hakusana">
-        <button type="submit">Hae</button>
-    </form>
-
-    <!-- Nappi uuden keskustelun luomiseen -->
-    <p>
-        <a href="/region/{{ region.id }}/new_topic">
-            <button>Luo uusi keskustelu</button>
-        </a>
-    </p>
-
-    <h2>Topicit</h2>
-    <ul>
-        {% for topic in topics %}
-            <li>
-                <a href="/topic/{{ topic.id }}">{{ topic.title }}</a> 
-                - {{ topic.description }}
-                <br>
-                <small>{{ topic.post_count }} viestiä</small>
-            </li>
-        {% else %}
-            <p>Tällä alueella ei ole vielä topicceja.</p>
-        {% endfor %}
-    </ul>
-    <p>
-        <a href="/">Takaisin pääsivulle</a>
-    </p>
+    <a href="/" class="back-button">
+        <button type="button">Takaisin pääsivulle</button>
+    </a>
+    <div class="header">
+        <h1>Alue: {{ region.name }}</h1>
+        <p>{{ region.description }}</p>
+    </div>
+    <div class="container">
+        <div class="search">
+            <h4>Haku</h4>
+            <form action="/region/{{ region.id }}/topic_search" method="GET">
+                <label for="query">Hae topicceja:</label>
+                <input type="text" id="query" name="query" placeholder="Hakusana">
+                <button type="submit">Hae</button>
+            </form>
+        </div>
+        <div class="topics">
+            <h2>Topicit</h2>
+            <ul>
+                {% for topic in topics %}
+                    <li>
+                        <a href="/topic/{{ topic.id }}">{{ topic.title }}</a> 
+                        - {{ topic.description }}
+                        <br>
+                        <small>{{ topic.post_count }} viestiä</small>
+                        {% if topic.author_id == session.get("user_id") or session.get("role") == "admin" %}
+                        <form action="/delete_topic/{{ topic.id }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                            <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän topicin?');">
+                                Poista
+                            </button>
+                        </form>
+                        {% endif %}
+                    </li>
+                {% else %}
+                    <p>Tällä alueella ei ole vielä topicceja.</p>
+                {% endfor %}
+            </ul>
+            <p>
+                <a href="/region/{{ region.id }}/new_topic">
+                    <button>Luo uusi keskustelu</button>
+                </a>
+            </p>
+        </div>
+    </div>
 </body>
 </html>
