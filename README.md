@@ -1,8 +1,8 @@
-# Tsoha-Naapurosto
+# Tsoha-Naapurusto
 
 Tietokanta ja web-ohjelmointi kurssi
 
-Naapurosto on verkkosovellus, jonka tarkoituksena on tarjota helppo ja selkeä keskustelufoorumi samalla alueella asuville ihmisille. Sovelluksessa käyttäjät voivat osallistua paikallisiin keskusteluihin, jakaa tietoa ja rakentaa yhteisöllisyyttä omalla alueellaan.
+Naapurusto on verkkosovellus, jonka tarkoituksena on tarjota helppo ja selkeä keskustelufoorumi samalla alueella asuville ihmisille. Sovelluksessa käyttäjät voivat osallistua paikallisiin keskusteluihin, jakaa tietoa ja rakentaa yhteisöllisyyttä omalla alueellaan.
 
 Sovellusta voi testata osoitteessa [linkki_sovellukseen].
 
