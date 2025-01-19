@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Minimalistinen Sovellus</title>
+    <link rel="stylesheet" href="/static/custom.css">
+</head>
+<body>
+
 <h1>New Topic in {{ region.name }}</h1>
 <form method="post">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
@@ -12,5 +21,5 @@
 {% if error %}
 <p style="color: red;">{{ error }}</p>
 {% endif %}
-
-
+</body>
+</html>
