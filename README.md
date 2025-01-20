@@ -29,7 +29,7 @@ Ylläpitäjän oikeudet:
 
 -Alueiden (region) lisääminen ja poistaminen.
 
-# Käynnistämisohje
+# Testausohje
 
 1. Suorita start-pg.sh ensimmäisessä terminaalissa.
 2. Avaa toinen terminaali ja käynnistä psql.
@@ -40,8 +40,3 @@ Ylläpitäjän oikeudet:
 7. Käynnistä Flask-sovellus komennolla flask run.
 8. Avaa selaimessa annettu linkki
 
-
-
-
-
-.
