@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Minimalistinen Sovellus</title>
+    <title>Naapurusto</title>
     <link rel="stylesheet" href="/static/custom.css">
 </head>
 <body>
@@ -31,24 +31,18 @@
                         - {{ topic.description }}
                         <br>
                         <small>{{ topic.post_count }} viestiä</small>
-                        {% if topic.author_id == session.get("user_id") or session.get("role") == "admin" %}
-                        <form action="/delete_topic/{{ topic.id }}" method="POST" style="display:inline;">
-                            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                            <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän topicin?');">
-                                Poista
-                            </button>
-                        </form>
-                        {% endif %}
                     </li>
                 {% else %}
                     <p>Tällä alueella ei ole vielä topicceja.</p>
                 {% endfor %}
             </ul>
+            {% if session.get("user_id") %}
             <p>
                 <a href="/region/{{ region.id }}/new_topic">
                     <button>Luo uusi keskustelu</button>
                 </a>
             </p>
+            {% endif %}
         </div>
     </div>
 </body>

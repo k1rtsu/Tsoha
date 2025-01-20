@@ -9,6 +9,24 @@ body {
     padding: 0;
 }
 
+/* Linkkien värit */
+a:link {
+    color: #FFFFFF; /* Valkoinen linkki */
+}
+
+a:visited {
+    color: #00FFFF; /* Kirkkaan sininen painettu linkki */
+}
+
+a:hover {
+    color: #FFD700; /* Keltainen hover-efekti */
+}
+
+a:active {
+    color: #FF4500; /* Oranssi aktiivinen linkki */
+}
+
+
 /* Keskitetty tervetuloa-teksti ja käyttäjän tervehdys */
 .header {
     text-align: center;
@@ -41,6 +59,14 @@ body {
     padding: 1em;
     border-radius: 5px;
     margin-right: 1em;
+    position: relative; /* Sijoitetaan sisällön suhteessa */
+}
+
+/* Alueet-otsikko ja nappi */
+.regions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Käyttäjän omat postaukset oikealla */
@@ -49,15 +75,6 @@ body {
     background-color: #1a1a1a; /* Tumma harmaa taustaväri */
     padding: 1em;
     border-radius: 5px;
-}
-
-/* Topicit oikealla */
-.topics {
-    flex: 3;
-    background-color: #1a1a1a; /* Tumma harmaa taustaväri */
-    padding: 1em;
-    border-radius: 5px;
-    margin-left: 1em;
 }
 
 /* Otsikot */
@@ -105,6 +122,20 @@ button:hover {
     top: 20px;
     right: 20px;
 }
+
+/* Pienempi poistopainike ja alueen nimen oikealle puolella */
+.regions li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.regions button {
+    padding: 0.2em 0.5em;
+    font-size: 0.8em;
+    margin-left: 10px;
+}
+
 
 /* Pienempi poistopainike ja postauksen otsikon oikealle puolella */
 .user-posts li {
